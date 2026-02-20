@@ -15,8 +15,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "JamesFit AI – Your Wardrobe, Now Sentient",
-  description: "Daily color-perfect athletic fits engineered for your exact drip. Powered by local AI + perceptual color science.",
+  title: "ClosetAI – Your Wardrobe, Now Sentient",
+  description: "Daily color-perfect athletic fits engineered for your exact drip. Powered by AI + perceptual color science.",
   manifest: "/manifest.json",
 };
 

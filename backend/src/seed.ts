@@ -25,18 +25,19 @@ const seedData = [
 ];
 
 async function seed() {
-  const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/jamesfit';
+  const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/closetai';
+  const userId = process.env.DEFAULT_USER || 'default';
   await mongoose.connect(uri);
   console.log('Connected to MongoDB');
   
-  await Clothing.deleteMany({ userId: 'james' });
+  await Clothing.deleteMany({ userId });
   console.log('Cleared existing data');
   
   for (const item of seedData) {
-    await Clothing.create({ userId: 'james', ...item });
+    await Clothing.create({ userId, ...item });
   }
   
-  console.log(`Seeded ${seedData.length} items for James`);
+  console.log(`Seeded ${seedData.length} items for user "${userId}"`);
   await mongoose.disconnect();
   console.log('Done!');
 }

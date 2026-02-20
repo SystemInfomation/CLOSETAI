@@ -24,7 +24,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-xl font-bold bg-gradient-to-r from-[#00f5ff] to-[#8b00ff] bg-clip-text text-transparent">
-              JAMESFIT AI
+              CLOSET AI
             </span>
           </Link>
 

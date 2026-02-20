@@ -1,11 +1,13 @@
 import { FastifyInstance } from 'fastify';
 import { Clothing } from '../models/Clothing.js';
 
+const DEFAULT_USER = process.env.DEFAULT_USER || 'default';
+
 export async function clothingRoutes(app: FastifyInstance) {
   // List all clothing with optional filters
   app.get('/', async (request, reply) => {
     const { type, tag, sort } = request.query as { type?: string; tag?: string; sort?: string };
-    const filter: Record<string, unknown> = { userId: 'james' };
+    const filter: Record<string, unknown> = { userId: DEFAULT_USER };
     if (type) filter.type = type;
     if (tag) filter.tags = tag;
     
@@ -41,7 +43,7 @@ export async function clothingRoutes(app: FastifyInstance) {
     
     try {
       const item = await Clothing.create({
-        userId: 'james',
+        userId: DEFAULT_USER,
         ...body
       });
       return reply.status(201).send(item);

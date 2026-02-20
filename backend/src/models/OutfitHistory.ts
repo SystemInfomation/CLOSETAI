@@ -12,7 +12,7 @@ export interface IOutfitHistory extends Document {
 }
 
 const outfitHistorySchema = new Schema<IOutfitHistory>({
-  userId: { type: String, required: true, default: 'james' },
+  userId: { type: String, required: true, default: 'default' },
   hoodieId: { type: String, required: true },
   shortsId: { type: String, required: true },
   harmonyScore: { type: Number, required: true },

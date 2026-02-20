@@ -122,13 +122,13 @@ export function generateStyleExplanation(hoodieHex: string, shortsHex: string, h
   
   const hypeLines = [
     `This ${harmonyResult.type} combo is absolutely unmatched. ${harmonyResult.explanation} and on a ${dayOfWeek}? That's ${vibe} energy right there.`,
-    `Yo James, this fit goes crazy. The ${harmonyResult.type} pairing gives off pure ${vibe} vibes. ${harmonyResult.explanation}. You're about to be the best-dressed in the building.`,
+    `This fit goes crazy. The ${harmonyResult.type} pairing gives off pure ${vibe} vibes. ${harmonyResult.explanation}. You're about to be the best-dressed in the building.`,
     `${harmonyResult.explanation}. This ${dayOfWeek} fit is giving ${vibe} and honestly nobody's touching this drip. Harmony score: ${harmonyResult.score}/100.`
   ];
   
   const motivational = [
-    "Walk in like you own the place, king. 👑",
-    "Atlanta's best-dressed and it's not even close. 🔥",
+    "Walk in like you own the place. 👑",
+    "Best-dressed in the room and it's not even close. 🔥",
     "Confidence is the best accessory, and you've got it locked. 💯",
     "This fit? Certified heat. No debate. 🏀"
   ];

@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Shirt, Sparkles, Flame, TrendingUp } from "lucide-react";
+import { useWardrobeStore } from "@/store/wardrobeStore";
+import { useMemo } from "react";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -18,6 +20,22 @@ const stagger = {
 };
 
 export default function HomePage() {
+  const { items, outfitHistory, streak } = useWardrobeStore();
+
+  const stats = useMemo(() => {
+    const hoodies = items.filter((i) => i.type === "hoodie").length;
+    const shorts = items.filter((i) => i.type === "shorts").length;
+    const combos = hoodies * shorts;
+    const avgHarmony =
+      outfitHistory.length > 0
+        ? Math.round(
+            outfitHistory.reduce((s, h) => s + h.outfit.harmonyScore, 0) /
+              outfitHistory.length
+          )
+        : 0;
+    return { avgHarmony, combos, streak };
+  }, [items, outfitHistory, streak]);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -34,7 +52,7 @@ export default function HomePage() {
           <motion.div variants={fadeIn} transition={{ duration: 0.6 }}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium bg-[#00f5ff]/10 text-[#00f5ff] border border-[#00f5ff]/20 mb-8">
               <Sparkles className="w-3.5 h-3.5" />
-              Powered by Local AI + Perceptual Color Science
+              Powered by AI + Perceptual Color Science
             </span>
           </motion.div>
 
@@ -45,7 +63,7 @@ export default function HomePage() {
             style={{ fontFamily: "var(--font-space)" }}
           >
             <span className="bg-gradient-to-r from-[#00f5ff] via-[#8b00ff] to-[#00f5ff] bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
-              JAMESFIT
+              CLOSET
             </span>
             <br />
             <span className="text-white">AI</span>
@@ -66,7 +84,7 @@ export default function HomePage() {
             className="text-sm sm:text-base text-[#666] max-w-xl mx-auto mt-4 mb-10 leading-relaxed"
           >
             Daily color-perfect athletic fits engineered for your exact drip.
-            Zero decision fatigue. Maximum confidence. Built exclusively for James.
+            Zero decision fatigue. Maximum confidence.
           </motion.p>
 
           <motion.div
@@ -110,19 +128,19 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <StatCard
               icon={<TrendingUp className="w-5 h-5 text-[#00f5ff]" />}
-              value="87%"
+              value={stats.avgHarmony > 0 ? `${stats.avgHarmony}%` : "—"}
               label="Avg Harmony Score"
               color="cyan"
             />
             <StatCard
               icon={<Shirt className="w-5 h-5 text-[#8b00ff]" />}
-              value="42"
+              value={stats.combos > 0 ? String(stats.combos) : "—"}
               label="Outfit Combinations"
               color="violet"
             />
             <StatCard
               icon={<Flame className="w-5 h-5 text-[#ff0033]" />}
-              value="9"
+              value={stats.streak > 0 ? String(stats.streak) : "—"}
               label="Day Drip Streak"
               color="red"
             />
@@ -130,9 +148,9 @@ export default function HomePage() {
 
           <div className="text-center mt-12">
             <p className="text-sm text-[#555]">
-              Built exclusively for{" "}
-              <span className="text-[#888]">James</span> •{" "}
-              <span className="text-[#888]">Atlanta, GA</span>
+              Add items to your{" "}
+              <Link href="/inventory" className="text-[#888] hover:text-[#00f5ff] transition-colors">inventory</Link>
+              {" "}to get started
             </p>
           </div>
         </motion.div>

@@ -3,6 +3,8 @@ import { Clothing } from '../models/Clothing.js';
 import { OutfitHistory } from '../models/OutfitHistory.js';
 import { computeHarmony, generateDripScore, generateStyleExplanation } from '../lib/colorHarmony.js';
 
+const DEFAULT_USER = process.env.DEFAULT_USER || 'default';
+
 interface OutfitCandidate {
   hoodie: { id: string; name: string; primaryHex: string; brand: string; wearCount: number };
   shorts: { id: string; name: string; primaryHex: string; brand: string; wearCount: number };
@@ -69,8 +71,8 @@ export async function plannerRoutes(app: FastifyInstance) {
   // Generate daily outfit
   app.post('/daily', async (_request, reply) => {
     try {
-      const hoodies = await Clothing.find({ userId: 'james', type: 'hoodie' }).lean();
-      const shorts = await Clothing.find({ userId: 'james', type: 'shorts' }).lean();
+      const hoodies = await Clothing.find({ userId: DEFAULT_USER, type: 'hoodie' }).lean();
+      const shorts = await Clothing.find({ userId: DEFAULT_USER, type: 'shorts' }).lean();
       
       if (hoodies.length === 0 || shorts.length === 0) {
         return reply.status(400).send({ 
@@ -101,8 +103,8 @@ export async function plannerRoutes(app: FastifyInstance) {
   // Generate weekly outfits (Mon-Fri)
   app.post('/week', async (_request, reply) => {
     try {
-      const hoodies = await Clothing.find({ userId: 'james', type: 'hoodie' }).lean();
-      const shorts = await Clothing.find({ userId: 'james', type: 'shorts' }).lean();
+      const hoodies = await Clothing.find({ userId: DEFAULT_USER, type: 'hoodie' }).lean();
+      const shorts = await Clothing.find({ userId: DEFAULT_USER, type: 'shorts' }).lean();
       
       if (hoodies.length === 0 || shorts.length === 0) {
         return reply.status(400).send({ 
@@ -155,7 +157,7 @@ export async function plannerRoutes(app: FastifyInstance) {
     
     try {
       const history = await OutfitHistory.create({
-        userId: 'james',
+        userId: DEFAULT_USER,
         hoodieId: body.hoodieId,
         shortsId: body.shortsId,
         harmonyScore: body.harmonyScore,

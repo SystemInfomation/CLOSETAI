@@ -1,8 +1,6 @@
-# JamesFit AI – Your Wardrobe, Now Sentient
+# ClosetAI – Your Wardrobe, Now Sentient
 
-> Daily color-perfect athletic fits engineered for your exact drip. Powered by local AI + perceptual color science.
-
-Built exclusively for **James** • Atlanta, GA
+> Daily color-perfect athletic fits engineered for your exact drip. Powered by AI + perceptual color science.
 
 ---
 
@@ -10,12 +8,12 @@ Built exclusively for **James** • Atlanta, GA
 
 - **Inventory System** — Full wardrobe management with color swatches, tags, search, and filtering
 - **StyleForge Planner** — AI-powered daily & weekly outfit generation with color harmony optimization
-- **Color Harmony Engine** — Complementary, analogous, triadic, and monochrome scoring with fair cool-undertone skin awareness
+- **Color Harmony Engine** — Complementary, analogous, triadic, and monochrome scoring
 - **Drip Analytics** — Wardrobe health score, color distribution charts, outfit history, and achievement badges
 - **Gamification** — Streak counter, drip scores, confetti celebrations, and unlockable badges
-- **Neon Void Grid Design** — 2026 cyber-athletic dark aesthetic with animated hex grid, glow effects, and 60fps Framer Motion animations
+- **Neon Void Grid Design** — Dark cyber-athletic aesthetic with animated hex grid, glow effects, and 60fps Framer Motion animations
 - **PWA Ready** — Installable progressive web app with offline-first architecture
-- **15 Pre-loaded Items** — Realistic athletic wardrobe seed (Nike Tech Fleece, Jordan Essentials, Under Armour, Champion)
+- **Clean Start** — Begin with an empty wardrobe and add your own items
 
 ## Tech Stack
 
@@ -40,7 +38,7 @@ Built exclusively for **James** • Atlanta, GA
 ### Prerequisites
 - Node.js 22+
 - npm 11+
-- MongoDB (local or Atlas M0 free cluster)
+- MongoDB (local or Atlas M0 free cluster) — _optional, only needed for backend persistence_
 
 ### 1. Clone & Install
 
@@ -52,26 +50,63 @@ cd CLOSETAI
 cd frontend
 npm install
 
-# Backend
+# Backend (optional)
 cd ../backend
 npm install
 ```
 
 ### 2. Configure Environment
 
-Create `backend/.env`:
-```env
-MONGODB_URI=mongodb://localhost:27017/jamesfit
-PORT=4000
-JWT_SECRET=your-secret-key
+#### Backend (required if running the API)
+
+Copy the example file and fill in your values:
+```bash
+cd backend
+cp .env.example .env
 ```
 
+Edit `backend/.env`:
+```env
+# MongoDB connection string
+# Local:  mongodb://localhost:27017/closetai
+# Atlas:  mongodb+srv://<user>:<password>@cluster.mongodb.net/closetai
+MONGODB_URI=mongodb://localhost:27017/closetai
+
+# Port for the Fastify API server
+PORT=4000
+
+# Secret key for signing JWT tokens — change this to a long random string in production
+JWT_SECRET=change-this-to-a-long-random-secret
+
+# Default user ID for data operations
+DEFAULT_USER=yourname
+```
+
+#### Frontend (optional — only needed to connect to the backend API)
+
+```bash
+cd frontend
+cp .env.local.example .env.local
+```
+
+Edit `frontend/.env.local`:
+```env
+# URL of the backend API server
+NEXT_PUBLIC_API_URL=http://localhost:4000
+```
+
+> **Note:** The frontend works standalone without a backend — it uses Zustand + localStorage for all state. The backend is only needed if you want MongoDB persistence.
+
 ### 3. Seed Database (Optional)
+
+If you want to pre-populate the backend database with sample clothing items:
 
 ```bash
 cd backend
 npx tsx src/seed.ts
 ```
+
+This seeds the database for the user configured in `DEFAULT_USER`.
 
 ### 4. Run Development Servers
 
@@ -80,7 +115,7 @@ npx tsx src/seed.ts
 cd frontend
 npm run dev
 
-# Terminal 2 - Backend (localhost:4000)
+# Terminal 2 - Backend (localhost:4000, optional)
 cd backend
 npm run dev
 ```
@@ -89,36 +124,34 @@ npm run dev
 
 Visit [http://localhost:3000](http://localhost:3000)
 
-> The frontend works standalone with client-side state (Zustand + localStorage). The backend is optional and provides MongoDB persistence.
-
 ## Project Structure
 
 ```
 CLOSETAI/
 ├── frontend/               # Next.js 16 App
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── page.tsx           # Landing page hero
-│   │   │   ├── layout.tsx         # Root layout + nav
-│   │   │   ├── globals.css        # Neon Void Grid design system
-│   │   │   ├── inventory/page.tsx # Wardrobe inventory
-│   │   │   ├── planner/page.tsx   # StyleForge outfit planner
-│   │   │   └── analytics/page.tsx # Drip analytics dashboard
-│   │   ├── components/
-│   │   │   └── Navigation.tsx     # Global nav bar
-│   │   ├── lib/
-│   │   │   ├── utils.ts           # cn() utility
-│   │   │   └── colorHarmony.ts    # Color harmony engine
-│   │   └── store/
-│   │       └── wardrobeStore.ts   # Zustand store + seed data
-│   └── public/
-│       └── manifest.json          # PWA manifest
+│   ├── .env.local.example  # Frontend env template
+│   └── src/
+│       ├── app/
+│       │   ├── page.tsx           # Landing page hero
+│       │   ├── layout.tsx         # Root layout + nav
+│       │   ├── globals.css        # Neon Void Grid design system
+│       │   ├── inventory/page.tsx # Wardrobe inventory
+│       │   ├── planner/page.tsx   # StyleForge outfit planner
+│       │   └── analytics/page.tsx # Drip analytics dashboard
+│       ├── components/
+│       │   └── Navigation.tsx     # Global nav bar
+│       ├── lib/
+│       │   ├── utils.ts           # cn() utility
+│       │   └── colorHarmony.ts    # Color harmony engine
+│       └── store/
+│           └── wardrobeStore.ts   # Zustand store (starts empty)
 │
-├── backend/                # Fastify API
+├── backend/                # Fastify API (optional)
+│   ├── .env.example        # Backend env template
 │   └── src/
 │       ├── index.ts               # Server entry
 │       ├── db.ts                  # MongoDB connection
-│       ├── seed.ts                # Seed 15 items
+│       ├── seed.ts                # Optional seed script
 │       ├── models/
 │       │   ├── Clothing.ts        # Clothing schema
 │       │   └── OutfitHistory.ts   # Outfit history schema
@@ -152,7 +185,6 @@ CLOSETAI/
 The engine scores outfit combinations (0–100) based on:
 - **Hue relationship** — Complementary (88), monochrome (85), triadic (82), analogous (78)
 - **Contrast ratio** — Bonus for visual distinction between top and bottom
-- **Skin-tone compatibility** — Optimized for fair cool-undertone: boosts cool blues/purples, penalizes warm yellows
 - **Variety factor** — Less-worn items get scoring boosts to encourage rotation
 
 ## License
