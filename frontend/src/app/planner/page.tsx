@@ -2,11 +2,12 @@
 
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Check, CalendarDays, Zap, RefreshCw } from "lucide-react";
+import { Sparkles, Check, CalendarDays, Zap } from "lucide-react";
 import { useWardrobeStore, Outfit } from "@/store/wardrobeStore";
 import { cn } from "@/lib/utils";
 import confetti from "canvas-confetti";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 export default function PlannerPage() {
   const { generateDailyOutfit, generateWeeklyOutfits, wearOutfit } = useWardrobeStore();
@@ -110,25 +111,20 @@ export default function PlannerPage() {
           </button>
         </div>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
+        <Button
+          variant="primary-lime"
+          size="lg"
           onClick={mode === "daily" ? handleGenerateDaily : handleGenerateWeekly}
-          disabled={generating}
+          loading={generating}
           aria-label={mode === "daily" ? "Generate daily outfit" : "Generate weekly outfits"}
-          className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#39ff14] to-[#00f5ff] text-black font-bold text-sm disabled:opacity-50"
         >
-          {generating ? (
-            <RefreshCw className="w-4 h-4 animate-spin" />
-          ) : (
-            <Sparkles className="w-4 h-4" />
-          )}
+          {!generating && <Sparkles className="w-4 h-4" />}
           {generating
             ? "Generating..."
             : mode === "daily"
             ? "Generate Today's Fire Fit"
             : "Generate Full Week"}
-        </motion.button>
+        </Button>
       </div>
 
       {/* Loading Skeleton */}
@@ -401,27 +397,18 @@ function OutfitCard({
         </p>
 
         {/* Wear button */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+        <Button
+          variant={isWorn ? "secondary" : "primary-lime"}
+          size={large ? "lg" : "md"}
           onClick={onWear}
           disabled={isWorn}
-          className={cn(
-            "w-full py-2.5 rounded-xl font-bold text-sm transition-all",
-            isWorn
-              ? "bg-[#39ff14]/10 text-[#39ff14] border border-[#39ff14]/20"
-              : "bg-gradient-to-r from-[#39ff14] to-[#00f5ff] text-black"
-          )}
+          className="w-full"
         >
           {isWorn ? (
-            <span className="flex items-center justify-center gap-2">
-              <Check className="w-4 h-4" />
-              Locked In ✅
-            </span>
-          ) : (
-            "Wear It 🔥"
-          )}
-        </motion.button>
+            <Check className="w-4 h-4" />
+          ) : null}
+          {isWorn ? "Locked In ✅" : "Wear It 🔥"}
+        </Button>
       </div>
     </motion.div>
   );
