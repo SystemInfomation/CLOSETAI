@@ -15,7 +15,7 @@ export interface IClothing extends Document {
 }
 
 const clothingSchema = new Schema<IClothing>({
-  userId: { type: String, required: true, default: 'james' },
+  userId: { type: String, required: true, default: 'default' },
   type: { type: String, enum: ['hoodie', 'shorts'], required: true },
   name: { type: String, required: true },
   brand: { type: String, default: '' },

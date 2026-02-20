@@ -2,12 +2,14 @@ import { FastifyInstance } from 'fastify';
 import { Clothing } from '../models/Clothing.js';
 import { OutfitHistory } from '../models/OutfitHistory.js';
 
+const DEFAULT_USER = process.env.DEFAULT_USER || 'default';
+
 export async function analyticsRoutes(app: FastifyInstance) {
   app.get('/', async (_request, reply) => {
     try {
-      const hoodies = await Clothing.find({ userId: 'james', type: 'hoodie' }).lean();
-      const shorts = await Clothing.find({ userId: 'james', type: 'shorts' }).lean();
-      const history = await OutfitHistory.find({ userId: 'james' }).sort({ date: -1 }).limit(30).lean();
+      const hoodies = await Clothing.find({ userId: DEFAULT_USER, type: 'hoodie' }).lean();
+      const shorts = await Clothing.find({ userId: DEFAULT_USER, type: 'shorts' }).lean();
+      const history = await OutfitHistory.find({ userId: DEFAULT_USER }).sort({ date: -1 }).limit(30).lean();
       
       const totalItems = hoodies.length + shorts.length;
       const totalWears = history.length;

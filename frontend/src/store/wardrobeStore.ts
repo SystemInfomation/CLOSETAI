@@ -62,35 +62,10 @@ function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substring(2);
 }
 
-// Seed data
-const SEED_DATA: Omit<ClothingItem, 'id' | 'wearCount' | 'lastWorn' | 'createdAt'>[] = [
-  { type: 'hoodie', name: 'Nike Tech Fleece Black', brand: 'Nike', primaryHex: '#1a1a1a', palette: ['#1a1a1a', '#333333', '#4d4d4d'], imageUrls: [], tags: ['school-safe', 'gym-only', 'favorite'] },
-  { type: 'hoodie', name: 'Jordan Essentials Gray', brand: 'Jordan', primaryHex: '#808080', palette: ['#808080', '#999999', '#666666'], imageUrls: [], tags: ['school-safe'] },
-  { type: 'hoodie', name: 'Nike Tech Fleece Navy', brand: 'Nike', primaryHex: '#1b2a4a', palette: ['#1b2a4a', '#2d4373', '#0f1d33'], imageUrls: [], tags: ['school-safe', 'favorite'] },
-  { type: 'hoodie', name: 'Champion Reverse Weave Forest', brand: 'Champion', primaryHex: '#2d5a27', palette: ['#2d5a27', '#3d7a37', '#1d3a17'], imageUrls: [], tags: ['school-safe'] },
-  { type: 'hoodie', name: 'Under Armour Storm Crimson', brand: 'Under Armour', primaryHex: '#8b0000', palette: ['#8b0000', '#a52a2a', '#660000'], imageUrls: [], tags: ['gym-only'] },
-  { type: 'hoodie', name: 'Nike Club Fleece White', brand: 'Nike', primaryHex: '#f0f0f0', palette: ['#f0f0f0', '#e0e0e0', '#ffffff'], imageUrls: [], tags: ['school-safe', 'new-drop'] },
-  { type: 'hoodie', name: 'Jordan Flight Heritage Teal', brand: 'Jordan', primaryHex: '#008080', palette: ['#008080', '#20b2aa', '#005f5f'], imageUrls: [], tags: ['school-safe', 'favorite'] },
-  { type: 'hoodie', name: 'Nike Sportswear Charcoal', brand: 'Nike', primaryHex: '#36454f', palette: ['#36454f', '#4a5c6a', '#2a3640'], imageUrls: [], tags: ['school-safe'] },
-  { type: 'shorts', name: 'Nike Dri-FIT Black Shorts', brand: 'Nike', primaryHex: '#111111', palette: ['#111111', '#222222', '#333333'], imageUrls: [], tags: ['gym-only', 'school-safe', 'favorite'] },
-  { type: 'shorts', name: 'Jordan Mesh Basketball Red', brand: 'Jordan', primaryHex: '#cc0000', palette: ['#cc0000', '#ff0000', '#990000'], imageUrls: [], tags: ['gym-only'] },
-  { type: 'shorts', name: 'Nike Tech Fleece Gray Shorts', brand: 'Nike', primaryHex: '#6b6b6b', palette: ['#6b6b6b', '#858585', '#525252'], imageUrls: [], tags: ['school-safe'] },
-  { type: 'shorts', name: 'Under Armour Cargo Olive', brand: 'Under Armour', primaryHex: '#556b2f', palette: ['#556b2f', '#6b8e23', '#3d4f22'], imageUrls: [], tags: ['school-safe'] },
-  { type: 'shorts', name: 'Champion Classic Navy Shorts', brand: 'Champion', primaryHex: '#1c2951', palette: ['#1c2951', '#2a3d6e', '#131c38'], imageUrls: [], tags: ['school-safe'] },
-  { type: 'shorts', name: 'Nike Sportswear White Shorts', brand: 'Nike', primaryHex: '#e8e8e8', palette: ['#e8e8e8', '#d4d4d4', '#f5f5f5'], imageUrls: [], tags: ['school-safe', 'new-drop'] },
-  { type: 'shorts', name: 'Jordan Dri-FIT Teal Shorts', brand: 'Jordan', primaryHex: '#20b2aa', palette: ['#20b2aa', '#3cb3ad', '#178f89'], imageUrls: [], tags: ['gym-only', 'new-drop'] }
-];
-
 export const useWardrobeStore = create<WardrobeState>()(
   persist(
     (set, get) => ({
-      items: SEED_DATA.map(item => ({
-        ...item,
-        id: generateId(),
-        wearCount: 0,
-        lastWorn: null,
-        createdAt: new Date().toISOString()
-      })),
+      items: [],
       outfitHistory: [],
       streak: 0,
       lastStreakDate: null,
@@ -251,7 +226,7 @@ export const useWardrobeStore = create<WardrobeState>()(
       getShorts: () => get().items.filter(i => i.type === 'shorts'),
     }),
     {
-      name: 'jamesfit-wardrobe',
+      name: 'closetai-wardrobe',
     }
   )
 );
