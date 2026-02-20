@@ -6,6 +6,7 @@ import { Plus, Trash2, Search, Tag, ShirtIcon, X } from "lucide-react";
 import { useWardrobeStore, ClothingItem } from "@/store/wardrobeStore";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 type FilterTab = "all" | "hoodie" | "shorts";
 
@@ -58,16 +59,15 @@ export default function InventoryPage() {
             shorts
           </p>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
+        <Button
+          variant="primary"
+          size="md"
           onClick={() => setShowAddModal(true)}
           aria-label="Add new clothing item"
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#00f5ff] to-[#00c8d6] text-black font-bold text-sm box-glow-cyan"
         >
           <Plus className="w-4 h-4" />
           Add Item
-        </motion.button>
+        </Button>
       </motion.div>
 
       {/* Tabs + Search */}
@@ -413,14 +413,14 @@ function AddItemModal({
             />
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <Button
             type="submit"
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-[#00f5ff] to-[#00c8d6] text-black font-bold text-sm"
+            variant="primary"
+            size="md"
+            className="w-full"
           >
             Add to Wardrobe
-          </motion.button>
+          </Button>
         </form>
       </motion.div>
     </motion.div>

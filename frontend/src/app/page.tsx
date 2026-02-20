@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Shirt, Sparkles, Flame, TrendingUp } from "lucide-react";
 import { useWardrobeStore } from "@/store/wardrobeStore";
 import { useMemo } from "react";
+import { Button } from "@/components/ui/button";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -93,24 +94,16 @@ export default function HomePage() {
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Link href="/inventory">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#00f5ff] to-[#00c8d6] text-black font-bold text-lg box-glow-cyan transition-all"
-              >
+              <Button variant="primary" size="xl">
                 <Shirt className="w-5 h-5" />
                 Build My Inventory
-              </motion.button>
+              </Button>
             </Link>
             <Link href="/planner">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-2 px-8 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-lg hover:bg-white/10 hover:border-[#8b00ff]/30 transition-all"
-              >
+              <Button variant="secondary" size="xl">
                 See Today&apos;s Locked-In Fit
                 <ArrowRight className="w-5 h-5" />
-              </motion.button>
+              </Button>
             </Link>
           </motion.div>
         </motion.div>
