@@ -405,13 +405,9 @@ function OutfitCard({
           className="w-full"
         >
           {isWorn ? (
-            <>
-              <Check className="w-4 h-4" />
-              Locked In ✅
-            </>
-          ) : (
-            "Wear It 🔥"
-          )}
+            <Check className="w-4 h-4" />
+          ) : null}
+          {isWorn ? "Locked In ✅" : "Wear It 🔥"}
         </Button>
       </div>
     </motion.div>

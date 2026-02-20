@@ -70,7 +70,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           type: "spring",
           stiffness: 400,
           damping: 30,
-          mass: 0.8,
+          mass: 0.5,
         }}
         {...props}
       >
