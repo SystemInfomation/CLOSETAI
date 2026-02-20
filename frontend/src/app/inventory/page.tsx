@@ -159,6 +159,7 @@ export default function InventoryPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setShowAddModal(true)}
+              aria-label="Add your first clothing item"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#00f5ff] to-[#00c8d6] text-black font-bold text-sm"
             >
               <Plus className="w-4 h-4" />
