@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Trash2, Search, Tag, ShirtIcon, X } from "lucide-react";
 import { useWardrobeStore, ClothingItem } from "@/store/wardrobeStore";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 type FilterTab = "all" | "hoodie" | "shorts";
 
@@ -61,7 +62,8 @@ export default function InventoryPage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#00f5ff] to-[#00c8d6] text-black font-bold text-sm"
+          aria-label="Add new clothing item"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#00f5ff] to-[#00c8d6] text-black font-bold text-sm box-glow-cyan"
         >
           <Plus className="w-4 h-4" />
           Add Item
@@ -130,26 +132,50 @@ export default function InventoryPage() {
             <ClothingCard
               key={item.id}
               item={item}
-              onDelete={() => removeItem(item.id)}
+              onDelete={() => {
+                removeItem(item.id);
+                toast.success(`Removed "${item.name}" from wardrobe`);
+              }}
             />
           ))}
         </AnimatePresence>
       </motion.div>
 
       {filteredItems.length === 0 && (
-        <div className="text-center py-20">
-          <ShirtIcon className="w-12 h-12 text-[#333] mx-auto mb-4" />
-          <p className="text-[#555]">No items found</p>
-          <p className="text-[#444] text-sm mt-1">
-            Try adjusting your filters or add new items
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center py-20"
+        >
+          <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-4">
+            <ShirtIcon className="w-8 h-8 text-[#444]" />
+          </div>
+          <p className="text-[#888] text-lg font-medium" style={{ fontFamily: "var(--font-space)" }}>No items found</p>
+          <p className="text-[#555] text-sm mt-1 mb-6">
+            {items.length === 0 ? "Start building your wardrobe arsenal" : "Try adjusting your filters"}
           </p>
-        </div>
+          {items.length === 0 && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setShowAddModal(true)}
+              aria-label="Add your first clothing item"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#00f5ff] to-[#00c8d6] text-black font-bold text-sm"
+            >
+              <Plus className="w-4 h-4" />
+              Add Your First Item
+            </motion.button>
+          )}
+        </motion.div>
       )}
 
       {/* Add Modal */}
       <AnimatePresence>
         {showAddModal && (
-          <AddItemModal onClose={() => setShowAddModal(false)} onAdd={addItem} />
+          <AddItemModal onClose={() => setShowAddModal(false)} onAdd={(item) => {
+            addItem(item);
+            toast.success(`Added "${item.name}" to wardrobe 🔥`);
+          }} />
         )}
       </AnimatePresence>
     </div>
@@ -267,6 +293,9 @@ function AddItemModal({
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Add new clothing item"
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}

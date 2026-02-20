@@ -6,6 +6,7 @@ import { Sparkles, Check, CalendarDays, Zap, RefreshCw } from "lucide-react";
 import { useWardrobeStore, Outfit } from "@/store/wardrobeStore";
 import { cn } from "@/lib/utils";
 import confetti from "canvas-confetti";
+import { toast } from "sonner";
 
 export default function PlannerPage() {
   const { generateDailyOutfit, generateWeeklyOutfits, wearOutfit } = useWardrobeStore();
@@ -21,6 +22,11 @@ export default function PlannerPage() {
       const outfit = generateDailyOutfit();
       setDailyOutfit(outfit);
       setGenerating(false);
+      if (outfit) {
+        toast.success("Today's fire fit is ready 🔥");
+      } else {
+        toast.error("Add hoodies and shorts to your inventory first!");
+      }
     }, 600);
   }, [generateDailyOutfit]);
 
@@ -30,6 +36,11 @@ export default function PlannerPage() {
       const outfits = generateWeeklyOutfits();
       setWeeklyOutfits(outfits);
       setGenerating(false);
+      if (outfits.length > 0) {
+        toast.success(`${outfits.length} days of fire fits generated 🔥`);
+      } else {
+        toast.error("Add hoodies and shorts to your inventory first!");
+      }
     }, 800);
   }, [generateWeeklyOutfits]);
 
@@ -37,6 +48,7 @@ export default function PlannerPage() {
     (outfit: Outfit) => {
       wearOutfit(outfit);
       setWorn((prev) => new Set([...prev, outfit.date]));
+      toast.success("Fit locked in! You're the best-dressed today 👑");
       confetti({
         particleCount: 100,
         spread: 70,
@@ -103,6 +115,7 @@ export default function PlannerPage() {
           whileTap={{ scale: 0.98 }}
           onClick={mode === "daily" ? handleGenerateDaily : handleGenerateWeekly}
           disabled={generating}
+          aria-label={mode === "daily" ? "Generate daily outfit" : "Generate weekly outfits"}
           className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#39ff14] to-[#00f5ff] text-black font-bold text-sm disabled:opacity-50"
         >
           {generating ? (
@@ -118,9 +131,39 @@ export default function PlannerPage() {
         </motion.button>
       </div>
 
+      {/* Loading Skeleton */}
+      {generating && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className={mode === "daily" ? "max-w-2xl mx-auto" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"}
+        >
+          {Array.from({ length: mode === "daily" ? 1 : 5 }).map((_, i) => (
+            <div key={i} className="glass rounded-2xl border border-white/5 overflow-hidden animate-pulse">
+              <div className="px-4 py-2 border-b border-white/5">
+                <div className="h-3 w-20 bg-white/10 rounded" />
+              </div>
+              <div className="flex h-24">
+                <div className="flex-1 bg-white/5" />
+                <div className="w-px bg-black/20" />
+                <div className="flex-1 bg-white/5" />
+              </div>
+              <div className="p-4 space-y-3">
+                <div className="flex justify-center gap-6">
+                  <div className="w-20 h-20 rounded-full bg-white/5" />
+                  <div className="w-20 h-20 rounded-full bg-white/5" />
+                </div>
+                <div className="h-4 bg-white/5 rounded w-3/4 mx-auto" />
+                <div className="h-10 bg-white/5 rounded-xl" />
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      )}
+
       {/* Daily Mode */}
       <AnimatePresence mode="wait">
-        {mode === "daily" && dailyOutfit && (
+        {mode === "daily" && dailyOutfit && !generating && (
           <motion.div
             key="daily"
             initial={{ opacity: 0, y: 20 }}
@@ -139,7 +182,7 @@ export default function PlannerPage() {
 
       {/* Weekly Mode */}
       <AnimatePresence mode="wait">
-        {mode === "weekly" && weeklyOutfits.length > 0 && (
+        {mode === "weekly" && weeklyOutfits.length > 0 && !generating && (
           <motion.div
             key="weekly"
             initial={{ opacity: 0 }}
@@ -167,23 +210,35 @@ export default function PlannerPage() {
 
       {/* Empty State */}
       {mode === "daily" && !dailyOutfit && !generating && (
-        <div className="text-center py-20">
-          <Sparkles className="w-12 h-12 text-[#333] mx-auto mb-4" />
-          <p className="text-[#555] text-lg">Ready to generate your fit?</p>
-          <p className="text-[#444] text-sm mt-1">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center py-20"
+        >
+          <div className="w-16 h-16 rounded-2xl bg-[#39ff14]/5 border border-[#39ff14]/10 flex items-center justify-center mx-auto mb-4">
+            <Sparkles className="w-8 h-8 text-[#39ff14]/40" />
+          </div>
+          <p className="text-[#888] text-lg font-medium" style={{ fontFamily: "var(--font-space)" }}>Ready to generate your fit?</p>
+          <p className="text-[#555] text-sm mt-1">
             Hit the button above and let StyleForge AI cook 🔥
           </p>
-        </div>
+        </motion.div>
       )}
 
       {mode === "weekly" && weeklyOutfits.length === 0 && !generating && (
-        <div className="text-center py-20">
-          <CalendarDays className="w-12 h-12 text-[#333] mx-auto mb-4" />
-          <p className="text-[#555] text-lg">Plan your whole week</p>
-          <p className="text-[#444] text-sm mt-1">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center py-20"
+        >
+          <div className="w-16 h-16 rounded-2xl bg-[#8b00ff]/5 border border-[#8b00ff]/10 flex items-center justify-center mx-auto mb-4">
+            <CalendarDays className="w-8 h-8 text-[#8b00ff]/40" />
+          </div>
+          <p className="text-[#888] text-lg font-medium" style={{ fontFamily: "var(--font-space)" }}>Plan your whole week</p>
+          <p className="text-[#555] text-sm mt-1">
             Generate 5 days of optimized outfits with zero repeats
           </p>
-        </div>
+        </motion.div>
       )}
     </div>
   );
