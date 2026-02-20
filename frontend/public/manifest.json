@@ -1,7 +1,7 @@
 {
-  "name": "JamesFit AI",
-  "short_name": "JamesFit",
-  "description": "Daily color-perfect athletic fits engineered for your exact drip. Powered by local AI + perceptual color science.",
+  "name": "ClosetAI – Your Wardrobe, Now Sentient",
+  "short_name": "ClosetAI",
+  "description": "Daily color-perfect athletic fits engineered for your exact drip. Powered by AI + perceptual color science.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",

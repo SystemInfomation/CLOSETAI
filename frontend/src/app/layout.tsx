@@ -34,9 +34,14 @@ export default function RootLayout({
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased bg-[#0a0a0a] text-[#f0f0f0] min-h-screen`}>
         <div className="hex-grid-bg" />
         <Navigation />
-        <main className="relative z-10 min-h-screen pt-16">
+        <main className="relative z-10 min-h-screen pt-16 pb-20 sm:pb-0">
           {children}
         </main>
+        <footer className="relative z-10 hidden sm:block border-t border-white/5 py-4 text-center">
+          <p className="text-xs text-[#444]">
+            ClosetAI v1.0 · Powered by AI + Perceptual Color Science
+          </p>
+        </footer>
         <Toaster
           theme="dark"
           position="bottom-right"

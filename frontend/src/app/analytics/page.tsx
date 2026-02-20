@@ -6,6 +6,7 @@ import { useWardrobeStore } from "@/store/wardrobeStore";
 import {
   BarChart,
   Bar,
+  Cell,
   XAxis,
   YAxis,
   ResponsiveContainer,
@@ -252,7 +253,7 @@ export default function AnalyticsPage() {
               />
               <Bar dataKey="count" radius={[4, 4, 0, 0]}>
                 {stats.colorData.map((entry, index) => (
-                  <rect key={index} fill={entry.fill} />
+                  <Cell key={index} fill={entry.fill} />
                 ))}
               </Bar>
             </BarChart>
