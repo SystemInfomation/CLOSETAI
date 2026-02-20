@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
+import rateLimit from '@fastify/rate-limit';
 import { connectDB } from './db.js';
 import { clothingRoutes } from './routes/clothing.js';
 import { plannerRoutes } from './routes/planner.js';
@@ -10,6 +11,7 @@ const app = Fastify({ logger: true });
 
 app.register(cors, { origin: true });
 app.register(helmet);
+app.register(rateLimit, { max: 100, timeWindow: '1 minute' });
 
 app.register(clothingRoutes, { prefix: '/api/clothing' });
 app.register(plannerRoutes, { prefix: '/api/planner' });
