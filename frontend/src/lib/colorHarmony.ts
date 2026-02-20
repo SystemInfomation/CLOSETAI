@@ -4,7 +4,7 @@ export interface HarmonyResult {
   explanation: string;
 }
 
-function hexToHSL(hex: string): { h: number; s: number; l: number } {
+export function hexToHSL(hex: string): { h: number; s: number; l: number } {
   hex = hex.replace('#', '');
   const r = parseInt(hex.substring(0, 2), 16) / 255;
   const g = parseInt(hex.substring(2, 4), 16) / 255;
